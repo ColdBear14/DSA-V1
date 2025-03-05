@@ -237,7 +237,7 @@ XArrayList<T>::~XArrayList()
     // if (deleteUserData)
     // {
     //     deleteUserData(this);
-    // }
+    // }    
     delete[] data;
 }
 
@@ -271,6 +271,14 @@ template <class T>
 T XArrayList<T>::removeAt(int index)
 {
     // TODO
+    checkIndex(index);
+    T item = data[index];
+    for(int i =index ;i <count;i++ ){
+        data[i] = data[i+1];
+    }
+    count--;
+    return item;
+    
 }
 
 template <class T>
@@ -283,24 +291,34 @@ template <class T>
 bool XArrayList<T>::empty()
 {
     // TODO
+    return count == 0;
 }
 
 template <class T>
 int XArrayList<T>::size()
 {
-    // TODO
+    // TODO'
+    return count;
 }
 
 template <class T>
 void XArrayList<T>::clear()
 {
     // TODO
+    delete[] data;
+    count = 0;
+    capacity = 10;
+    itemEqual = 0;
+    deleteUserData = 0;
+    data = new T[capacity];
 }
 
 template <class T>
 T &XArrayList<T>::get(int index)
 {
     // TODO
+    checkIndex(index);
+    return data[index];
 }
 
 template <class T>
