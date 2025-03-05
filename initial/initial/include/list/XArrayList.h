@@ -182,7 +182,9 @@ XArrayList<T>::XArrayList(
     bool (*itemEqual)(T &, T &),
     int capacity)
 {
-    // TODO
+    this->deleteUserData = deleteUserData;
+    this->itemEqual = itemEqual;
+    this->capacity = capacity;
 }
 
 template <class T>
@@ -211,6 +213,15 @@ template <class T>
 XArrayList<T>::XArrayList(const XArrayList<T> &list)
 {
     // TODO
+    this->capacity = list.capacity;
+    this->count = list.count;
+    this->itemEqual = list.itemEqual;
+    this->deleteUserData = list.deleteUserData;
+    this->data = new T[this->capacity];
+    for (int i = 0; i < this->count; i++)
+    {
+        this->data[i] = list.data[i];
+    }
 }
 
 template <class T>
@@ -223,18 +234,37 @@ template <class T>
 XArrayList<T>::~XArrayList()
 {
     // TODO
+    // if (deleteUserData)
+    // {
+    //     deleteUserData(this);
+    // }
+    delete[] data;
 }
 
 template <class T>
 void XArrayList<T>::add(T e)
 {
     // TODO
+    ensureCapacity(count+1);
+    data[count] = e;
+    count++;
 }
 
 template <class T>
 void XArrayList<T>::add(int index, T e)
 {
     // TODO
+    if(index < 0 || index > count)
+    {
+        throw std::out_of_range("Index is out of range!");
+    }
+    ensureCapacity(count+1);
+    for(int i = count; i > index; i--)
+    {
+        data[i] = data[i-1];
+    }
+    data[index] = e;
+    count++;
 }
 
 template <class T>
@@ -311,6 +341,11 @@ void XArrayList<T>::checkIndex(int index)
      * Ensures safe access to the list's elements by preventing invalid index operations.
      */
     // TODO
+    if(index < 0 || index >= count)
+    {
+        throw std::out_of_range("Index is out of range!");
+    }
+
 }
 template <class T>
 void XArrayList<T>::ensureCapacity(int index)
@@ -322,6 +357,26 @@ void XArrayList<T>::ensureCapacity(int index)
      * In case of memory allocation failure, catches std::bad_alloc.
      */
     // TODO
+    if(index > capacity)
+    {
+        throw std::out_of_range("Index is out of range!");
+        try{
+            int newCapacity = capacity + 10;
+            T *newData = new T[newCapacity];
+            for(int i = 0; i < count; i++)
+            {
+                newData[i] = data[i];
+            }
+            delete[] data;
+            data = newData;
+            capacity = newCapacity;
+        }
+        catch(std::bad_alloc &e)
+        {
+            throw e;
+        }
+
+    }
 }
 
 #endif /* XARRAYLIST_H */
