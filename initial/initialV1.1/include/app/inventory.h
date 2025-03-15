@@ -110,24 +110,31 @@ template <typename T>
 List1D<T>::List1D()
 {
     // TODO
+    XArrayList<T> *list = new XArrayList<T>();
+    pList = list;
 }
 
 template <typename T>
 List1D<T>::List1D(int num_elements)
 {
     // TODO
+    XArrayList<T> *list = new XArrayList<T>(num_elements);
+    pList = list;
 }
 
 template <typename T>
 List1D<T>::List1D(const T *array, int num_elements)
 {
     // TODO
+    XArrayList<T> *list = new XArrayList<T>(array, num_elements);
+    pList = list;
 }
 
 template <typename T>
 List1D<T>::List1D(const List1D<T> &other)
 {
     // TODO
+    pList = other.pList;
 }
 
 template <typename T>
