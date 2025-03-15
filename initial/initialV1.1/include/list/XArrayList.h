@@ -229,7 +229,7 @@ void XArrayList<T>::removeInternalData()
     }
     delete[] data;
     count = 0;
-    capacity = 10;
+    capacity = 5;
 }
 
 template <class T>
@@ -251,32 +251,31 @@ template <class T>
 XArrayList<T> &XArrayList<T>::operator=(const XArrayList<T> &list)
 {
     // TODO
-    if(this == &list)
+    this->capacity = list.capacity;
+    this->count = list.count;
+    this->itemEqual = list.itemEqual;
+    this->deleteUserData = list.deleteUserData;
+    this->data = new T[this->capacity];
+    for (int i = 0; i < this->count; i++)
     {
-        delete[] data;
-
-        this->capacity = list.capacity;
-        this->count = list.count;
-        this->itemEqual = list.itemEqual;
-        this->deleteUserData = list.deleteUserData;
-        this->data = new T[this->capacity];
-        for (int i = 0; i < this->count; i++)
-        {
-            this->data[i] = list.data[i];
-        }
+        this->data[i] = list.data[i];
     }
-    return *this;
 }
 
 template <class T>
 XArrayList<T>::~XArrayList()
 {
     // TODO
-    if (deleteUserData)
-    {
+    if (deleteUserData != nullptr) {
         deleteUserData(this);
-    }    
-    delete[] data;
+    }
+    if (data != nullptr) {
+        delete[] data;
+    }
+    capacity = 5;
+    count = 0;
+    itemEqual = nullptr;
+    deleteUserData = nullptr;
 }
 
 template <class T>
@@ -354,7 +353,7 @@ void XArrayList<T>::clear()
     // TODO
     delete[] data;
     count = 0;
-    capacity = 10;
+    capacity = 5;
     itemEqual = 0;
     deleteUserData = 0;
     data = new T[capacity];
@@ -457,7 +456,7 @@ void XArrayList<T>::ensureCapacity(int index)
     {
         throw std::out_of_range("Index is out of range!");
         try{
-            int newCapacity = capacity + 10;
+            int newCapacity = capacity * 1.5;
             T *newData = new T[newCapacity];
             for(int i = 0; i < count; i++)
             {
