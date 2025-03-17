@@ -111,30 +111,39 @@ List1D<T>::List1D()
 {
     // TODO
     XArrayList<T> *list = new XArrayList<T>();
-    pList = list;
+    this->pList = list;
 }
 
 template <typename T>
 List1D<T>::List1D(int num_elements)
 {
     // TODO
-    XArrayList<T> *list = new XArrayList<T>(num_elements);
-    pList = list;
+    XArrayList<T> *list = new XArrayList<T>();
+    for(int i = 0; i < num_elements; i++)
+    {
+        list->add(0);
+    }
+    this->pList = list;
 }
 
 template <typename T>
 List1D<T>::List1D(const T *array, int num_elements)
 {
     // TODO
-    XArrayList<T> *list = new XArrayList<T>(array, num_elements);
-    pList = list;
+    XArrayList<T> *list = new XArrayList<T>();
+    for(int i = 0; i < num_elements; i++)
+    {
+        list->add(array[i]);
+    }
+    this->pList = list;
 }
 
 template <typename T>
 List1D<T>::List1D(const List1D<T> &other)
 {
     // TODO
-    pList = other.pList;
+    XArrayList<T> *list = new XArrayList<T>(other.pList);
+    this->pList = list;
 }
 
 template <typename T>
