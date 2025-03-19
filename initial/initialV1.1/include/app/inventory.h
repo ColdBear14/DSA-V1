@@ -281,6 +281,9 @@ ostream &operator<<(ostream &os, const List2D<T> &matrix)
 InventoryManager::InventoryManager()
 {
     // TODO
+    this->attributesMatrix = List2D<InventoryAttribute>();
+    this->productNames = List1D<string>();
+    this->quantities = List1D<int>();    
 }
 
 InventoryManager::InventoryManager(const List2D<InventoryAttribute> &matrix,
@@ -288,46 +291,80 @@ InventoryManager::InventoryManager(const List2D<InventoryAttribute> &matrix,
                                    const List1D<int> &quantities)
 {
     // TODO
+    this->attributesMatrix = matrix;
+    this->productNames = names;
+    this->quantities = quantities;
 }
 
 InventoryManager::InventoryManager(const InventoryManager &other)
 {
     // TODO
+    this->attributesMatrix = other.attributesMatrix;
+    this->productNames = other.productNames;
+    this->quantities = other.quantities;
 }
 
 int InventoryManager::size() const
 {
     // TODO
+    return productNames.size();
 }
 
 List1D<InventoryAttribute> InventoryManager::getProductAttributes(int index) const
 {
     // TODO
+    if(index < 0 || index >= this->size())
+    {
+        throw out_of_range("Index is invalid!");
+    }
+    return attributesMatrix.getRow(index);
 }
 
 string InventoryManager::getProductName(int index) const
 {
     // TODO
+    if(index < 0 || index >= this->size())
+    {
+        throw out_of_range("Index is invalid!");
+    }
+    return productNames.get(index);
 }
 
 int InventoryManager::getProductQuantity(int index) const
 {
     // TODO
+    if(index < 0 || index >= this->size())
+    {
+        throw out_of_range("Index is invalid!");
+    }
+    return quantities.get(index);
 }
 
 void InventoryManager::updateQuantity(int index, int newQuantity)
 {
     // TODO
+    if(index < 0 || index >= this->size())
+    {
+        throw out_of_range("Index is invalid!");
+    }
+    quantities.set(index, newQuantity);
 }
 
 void InventoryManager::addProduct(const List1D<InventoryAttribute> &attributes, const string &name, int quantity)
 {
     // TODO
+    productNames.add(name);
+    quantities.add(quantity);
+    attributesMatrix.setRow(attributesMatrix.rows(), attributes);
 }
 
 void InventoryManager::removeProduct(int index)
 {
     // TODO
+    if(index < 0 || index >= this->size())
+    {
+        throw out_of_range("Index is invalid!");
+    }
 }
 
 List1D<string> InventoryManager::query(int attributeName, const double &minValue,
@@ -357,21 +394,31 @@ void InventoryManager::split(InventoryManager &section1,
 List2D<InventoryAttribute> InventoryManager::getAttributesMatrix() const
 {
     // TODO
+    return attributesMatrix;
 }
 
 List1D<string> InventoryManager::getProductNames() const
 {
     // TODO
+    return productNames;
 }
 
 List1D<int> InventoryManager::getQuantities() const
 {
     // TODO
+    return quantities;
 }
 
 string InventoryManager::toString() const
 {
     // TODO
+    stringstream ss;
+    ss << "InventoryManager[ " << endl;
+    ss << "Attributes Matrix: " << attributesMatrix.toString() << "," << endl;
+    ss << "Product Names: " << productNames.toString() << "," << endl;
+    ss << "Quantities: " << quantities.toString() << endl;
+    ss << "]";
+    return ss.str();
 }
 
 #endif /* INVENTORY_MANAGER_H */
