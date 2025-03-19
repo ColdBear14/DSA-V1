@@ -229,7 +229,7 @@ void XArrayList<T>::removeInternalData()
     }
     delete[] data;
     count = 0;
-    capacity = 5;
+    capacity = 0;
 }
 
 template <class T>

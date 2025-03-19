@@ -150,42 +150,50 @@ template <typename T>
 List1D<T>::~List1D()
 {
     // TODO
+    ~XArrayList<T>();
+    delete pList;
 }
 
 template <typename T>
 int List1D<T>::size() const
 {
     // TODO
+    return pList->size();
 }
 
 template <typename T>
 T List1D<T>::get(int index) const
 {
     // TODO
+    return pList->get(index);
 }
 
 template <typename T>
 void List1D<T>::set(int index, T value)
 {
     // TODO
+    pList->add(index, value);
 }
 
 template <typename T>
 void List1D<T>::add(const T &value)
 {
     // TODO
+    pList->add(value);
 }
 
 template <typename T>
 string List1D<T>::toString() const
 {
     // TODO
+    return pList->toString();
 }
 
 template <typename T>
 ostream &operator<<(ostream &os, const List1D<T> &list)
 {
     // TODO
+    os << list.toString();
     return os;
 }
 
@@ -194,60 +202,78 @@ template <typename T>
 List2D<T>::List2D()
 {
     // TODO
+    DLinkedList<T> *listMatrix = new DLinkedList<T>();
+    this->pMatrix = listMatrix;
 }
 
 template <typename T>
 List2D<T>::List2D(List1D<T> *array, int num_rows)
 {
     // TODO
+    DLinkedList<T> *listMatrix = new DLinkedList<T>();
+    for(int i = 0; i < num_rows; i++)
+    {
+        listMatrix->add(array[i]);
+    }
+    this->pMatrix = listMatrix;
 }
 
 template <typename T>
 List2D<T>::List2D(const List2D<T> &other)
 {
     // TODO
+    DLinkedList<T> *listMatrix = new DLinkedList<T>(other.pMatrix);
+    this->pMatrix = listMatrix;
 }
 
 template <typename T>
 List2D<T>::~List2D()
 {
     // TODO
+    ~DLinkedList<T>();
+    delete pMatrix;
 }
 
 template <typename T>
 int List2D<T>::rows() const
 {
     // TODO
+    return pMatrix->size();
 }
 
 template <typename T>
 void List2D<T>::setRow(int rowIndex, const List1D<T> &row)
 {
     // TODO
+    pMatrix->add(rowIndex, row);
 }
 
 template <typename T>
 T List2D<T>::get(int rowIndex, int colIndex) const
 {
     // TODO
+    return pMatrix->get(rowIndex).get(colIndex);
 }
 
 template <typename T>
 List1D<T> List2D<T>::getRow(int rowIndex) const
 {
     // TODO
+    return pMatrix->get(rowIndex);
 }
 
 template <typename T>
 string List2D<T>::toString() const
 {
     // TODO
+    return pMatrix->toString();
 }
 
 template <typename T>
 ostream &operator<<(ostream &os, const List2D<T> &matrix)
 {
     // TODO
+    os << matrix.toString();
     return os;
 }
 
