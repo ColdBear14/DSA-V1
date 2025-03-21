@@ -32,6 +32,7 @@ public:
     string toString() const;
 
     T removeAt(int index); // add function to remove element at specific index
+    void sort(bool ascending, List1D<string> &result);
 
     friend ostream &operator<<(ostream &os, const List1D<T> &list);
 };
@@ -91,7 +92,7 @@ public:
     void addProduct(const List1D<InventoryAttribute> &attributes, const string &name, int quantity);
     void removeProduct(int index);
 
-    List1D<string> query(int attributeName, const double &minValue,
+    List1D<string> query(string attributeName, const double &minValue,
                          const double &maxValue, int minQuantity, bool ascending) const;
 
     void removeDuplicates();
@@ -207,6 +208,52 @@ T List1D<T>::removeAt(int index)
 {
     // TODO
     return pList->removeAt(index);
+}
+
+template <typename T>
+void List1D<T>::sort(bool ascending, List1D<string> &result)
+{
+    // TODO
+    if(ascending)
+    {
+        // Shell sort
+        int n = pList->size();
+        for(int gap = n / 2; gap > 0; gap /= 2)
+        {
+            for(int i = gap; i < n; i += 1)
+            {
+                T temp = pList->get(i);
+                T temp2 = result.get(i);
+                int j;
+                for(j = i; j >= gap && pList->get(j - gap) > temp; j -= gap)
+                {
+                    pList->add(j, pList->get(j - gap));
+                }
+                pList->add(j, temp);
+                result.add(j, temp2);
+            }
+        }
+    }
+    else
+    {
+        // Reverse shell sort
+        int n = pList->size();
+        for(int gap = n / 2; gap > 0; gap /= 2)
+        {
+            for(int i = gap; i < n; i += 1)
+            {
+                T temp = pList->get(i);
+                T temp2 = result.get(i);
+                int j;
+                for(j = i; j >= gap && pList->get(j - gap) < temp; j -= gap)
+                {
+                    pList->add(j, pList->get(j - gap));
+                }
+                pList->add(j, temp);
+                result.add(j, temp2);
+            }
+        }
+    }
 }
 
 // -------------------- List2D Method Definitions --------------------
@@ -388,14 +435,43 @@ void InventoryManager::removeProduct(int index)
     productNames.removeAt(index);
     quantities.removeAt(index);
     attributesMatrix.removeAt(index);
-
 }
 
-List1D<string> InventoryManager::query(int attributeName, const double &minValue,
+List1D<string> InventoryManager::query(string attributeName, const double &minValue,
                                        const double &maxValue, int minQuantity, bool ascending) const
 {
     // TODO
-
+    List1D<string> result;
+    List1D<int> quantities;
+    for(int i = 0; i < this->size(); i++)
+    {
+        bool valid = false;
+        for(int j = 0; j < this->attributesMatrix.getRow(i).size(); j++)
+        {
+            if(this->attributesMatrix.get(i, j).name == attributeName &&
+            this->attributesMatrix.get(i, j).value >= minValue &&
+            this->attributesMatrix.get(i, j).value <= maxValue &&
+            this->quantities.get(i) >= minQuantity)
+            {
+                valid = true;
+                break;
+            }
+        }
+        if(valid)
+        {
+            result.add(this->productNames.get(i));
+            quantities.add(this->quantities.get(i));
+        }
+    }
+    if(ascending)
+    {
+        quantities.sort(ascending, result);
+    }
+    else
+    {
+        quantities.sort(ascending, result);
+    }
+    return result;
 }
 
 void InventoryManager::removeDuplicates()
