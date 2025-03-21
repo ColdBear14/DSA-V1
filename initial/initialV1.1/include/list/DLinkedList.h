@@ -464,11 +464,11 @@ T DLinkedList<T>::removeAt(int index)
     // If removing the last node (tail)
     else if (index == count - 1) {
         nodeToRemove = tail;
-        tail = tail->prev;=
+        tail = tail->prev;
         if (tail) {
-            tail->next = nullptr;=
+            tail->next = nullptr;
         } else {
-            head = nullptr;=
+            head = nullptr;
         }
     }
     else {
