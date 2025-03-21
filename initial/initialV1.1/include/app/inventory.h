@@ -31,6 +31,8 @@ public:
     void add(const T &value);
     string toString() const;
 
+    T removeAt(int index); // add function to remove element at specific index
+
     friend ostream &operator<<(ostream &os, const List1D<T> &list);
 };
 
@@ -52,6 +54,8 @@ public:
     T get(int rowIndex, int colIndex) const;
     List1D<T> getRow(int rowIndex) const;
     string toString() const;
+
+    T removeAt(int index); // add function to remove element at specific index
 
     friend ostream &operator<<(ostream &os, const List2D<T> &matrix);
 };
@@ -197,6 +201,14 @@ ostream &operator<<(ostream &os, const List1D<T> &list)
     return os;
 }
 
+// -------------------- List1D Method Definitions --------------------
+template <typename T>
+T List1D<T>::removeAt(int index)
+{
+    // TODO
+    return pList->removeAt(index);
+}
+
 // -------------------- List2D Method Definitions --------------------
 template <typename T>
 List2D<T>::List2D()
@@ -275,6 +287,14 @@ ostream &operator<<(ostream &os, const List2D<T> &matrix)
     // TODO
     os << matrix.toString();
     return os;
+}
+
+// -------------------- List2D Method Definitions --------------------
+template <typename T>
+T List2D<T>::removeAt(int index)
+{
+    // TODO
+    return pMatrix->removeAt(index);
 }
 
 // -------------------- InventoryManager Method Definitions --------------------
@@ -365,6 +385,10 @@ void InventoryManager::removeProduct(int index)
     {
         throw out_of_range("Index is invalid!");
     }
+    productNames.removeAt(index);
+    quantities.removeAt(index);
+    attributesMatrix.removeAt(index);
+
 }
 
 List1D<string> InventoryManager::query(int attributeName, const double &minValue,
