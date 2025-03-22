@@ -359,10 +359,7 @@ DLinkedList<T>::~DLinkedList()
     while(current != nullptr){
         Node* next = current->next;
         if(deleteUserData){
-            deleteUserData(current->data);
-        }
-        else{
-            delete current->data;
+            this->deleteUserData(this);
         }
         delete current;
         current = next;
@@ -509,10 +506,7 @@ void DLinkedList<T>::clear()
     while(current != tail){
         Node* next = current->next;
         if(deleteUserData){
-            deleteUserData(current->data);
-        }
-        else{
-            delete current->data;
+            this->deleteUserData(this);
         }
         delete current;
         current = next;

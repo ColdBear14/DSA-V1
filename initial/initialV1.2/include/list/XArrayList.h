@@ -267,7 +267,7 @@ XArrayList<T>::~XArrayList()
 {
     // TODO
     if (deleteUserData != nullptr) {
-        deleteUserData(this);
+        this->deleteUserData(this);
     }
     if (data != nullptr) {
         delete[] data;
@@ -353,7 +353,7 @@ void XArrayList<T>::clear()
     // TODO
     delete[] data;
     count = 0;
-    capacity = 5;
+    capacity = 10;
     itemEqual = 0;
     deleteUserData = 0;
     data = new T[capacity];
@@ -371,12 +371,14 @@ template <class T>
 int XArrayList<T>::indexOf(T item)
 {
     // TODO
-    if(this->contains(item) == true){
-        return item;
+    for (int i = 0; i < count; i++)
+    {
+        if(data[i] == item)
+        {
+            return i;
+        }
     }
-    else{
-        return -1;
-    }
+    return -1;
 }
 template <class T>
 bool XArrayList<T>::contains(T item)
@@ -415,10 +417,6 @@ string XArrayList<T>::toString(string (*item2str)(T &))
         if(item2str)
         {
             str += item2str(data[i]);
-        }
-        else
-        {
-            str += to_string(data[i]);
         }
     }
     str += "]";
