@@ -4,7 +4,7 @@
 
 #ifndef XARRAYLIST_H
 #define XARRAYLIST_H
-#include "list/IList.h"
+#include "IList.h"
 #include <memory.h>
 #include <sstream>
 #include <iostream>
@@ -322,7 +322,7 @@ bool XArrayList<T>::removeItem(T item, void (*removeItemData)(T))
 {
     // TODO
     for(int i = 0; i < count; i++){
-        if(data[i] == item){
+        if(this->equals(data[i], item, this->itemEqual)){
             if(removeItemData){
                 removeItemData(data[i]);
             }
@@ -354,9 +354,6 @@ void XArrayList<T>::clear()
     delete[] data;
     count = 0;
     capacity = 10;
-    itemEqual = 0;
-    deleteUserData = 0;
-    data = new T[capacity];
 }
 
 template <class T>
@@ -373,7 +370,7 @@ int XArrayList<T>::indexOf(T item)
     // TODO
     for (int i = 0; i < count; i++)
     {
-        if(data[i] == item)
+        if(this->equals(data[i], item, this->itemEqual))
         {
             return i;
         }
@@ -386,7 +383,7 @@ bool XArrayList<T>::contains(T item)
     // TODO
     for (int i = 0; i < count; i++)
     {
-        if(data[i] == item)
+        if(this->equals(data[i], item, this->itemEqual))
         {
             return true;
         }
@@ -407,20 +404,20 @@ string XArrayList<T>::toString(string (*item2str)(T &))
      */
 
     // TODO
-    string str = "[";
-    for(int i = 0; i < count; i++)
+    ostringstream ss;
+    ss << "[";
+
+    for (size_t i = 0; i < this->size(); ++i)
     {
-        if(i != 0)
-        {
-            str += ", ";
-        }
-        if(item2str)
-        {
-            str += item2str(data[i]);
-        }
+        if (i > 0)
+            ss << ", ";
+
+        if (item2str)
+            ss << item2str(this->data[i]);
     }
-    str += "]";
-    return str;
+
+    ss << "]";
+    return ss.str();
 }
 
 //////////////////////////////////////////////////////////////////////

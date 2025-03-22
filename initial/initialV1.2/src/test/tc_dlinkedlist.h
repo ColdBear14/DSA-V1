@@ -1,8 +1,8 @@
 
 #include <iostream>
 #include <iomanip>
-#include "list/DLinkedList.h"
-#include "util/Point.h"
+#include "../../include/list/DLinkedList.h" //RED-FLAG
+#include "../../include/util/Point.h"
 using namespace std;
 
 void dlistDemo1(){

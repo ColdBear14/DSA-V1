@@ -267,12 +267,12 @@ XArrayList<T>::~XArrayList()
 {
     // TODO
     if (deleteUserData != nullptr) {
-        deleteUserData(this);
+        this->deleteUserData(this);
     }
     if (data != nullptr) {
         delete[] data;
     }
-    capacity = 5;
+    capacity = 0;
     count = 0;
     itemEqual = nullptr;
     deleteUserData = nullptr;
@@ -322,7 +322,7 @@ bool XArrayList<T>::removeItem(T item, void (*removeItemData)(T))
 {
     // TODO
     for(int i = 0; i < count; i++){
-        if(data[i] == item){
+        if(this->equals(data[i], item, this->itemEqual)){
             if(removeItemData){
                 removeItemData(data[i]);
             }
@@ -353,10 +353,7 @@ void XArrayList<T>::clear()
     // TODO
     delete[] data;
     count = 0;
-    capacity = 5;
-    itemEqual = 0;
-    deleteUserData = 0;
-    data = new T[capacity];
+    capacity = 10;
 }
 
 template <class T>
@@ -371,12 +368,14 @@ template <class T>
 int XArrayList<T>::indexOf(T item)
 {
     // TODO
-    if(this->contains(item) == true){
-        return item;
+    for (int i = 0; i < count; i++)
+    {
+        if(this->equals(data[i], item, this->itemEqual))
+        {
+            return i;
+        }
     }
-    else{
-        return -1;
-    }
+    return -1;
 }
 template <class T>
 bool XArrayList<T>::contains(T item)
@@ -384,7 +383,7 @@ bool XArrayList<T>::contains(T item)
     // TODO
     for (int i = 0; i < count; i++)
     {
-        if(data[i] == item)
+        if(this->equals(data[i], item, this->itemEqual))
         {
             return true;
         }
@@ -405,24 +404,20 @@ string XArrayList<T>::toString(string (*item2str)(T &))
      */
 
     // TODO
-    string str = "[";
-    for(int i = 0; i < count; i++)
+    ostringstream ss;
+    ss << "[";
+
+    for (size_t i = 0; i < this->size(); ++i)
     {
-        if(i != 0)
-        {
-            str += ", ";
-        }
-        if(item2str)
-        {
-            str += item2str(data[i]);
-        }
-        else
-        {
-            str += to_string(data[i]);
-        }
+        if (i > 0)
+            ss << ", ";
+
+        if (item2str)
+            ss << item2str(this->data[i]);
     }
-    str += "]";
-    return str;
+
+    ss << "]";
+    return ss.str();
 }
 
 //////////////////////////////////////////////////////////////////////

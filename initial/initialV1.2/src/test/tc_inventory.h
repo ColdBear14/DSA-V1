@@ -1,5 +1,5 @@
 #include <iostream>
-#include "app/inventory.h" 
+#include "../../include/app/inventory.h"
 
 using namespace std;
 

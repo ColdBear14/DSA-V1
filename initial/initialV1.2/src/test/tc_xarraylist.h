@@ -1,7 +1,8 @@
 #include <iostream>
 #include <iomanip>
-#include "list/XArrayList.h"
-#include "util/Point.h"
+#include "../../include/list/DLinkedList.h"
+#include "../../include/util/Point.h"
+#include "../../include/list/XArrayList.h"
 using namespace std;
 
 void xlistDemo1(){

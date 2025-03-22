@@ -5,7 +5,7 @@
 #ifndef DLINKEDLIST_H
 #define DLINKEDLIST_H
 
-#include "list/IList.h"
+#include "IList.h"
 
 #include <sstream>
 #include <iostream>
@@ -536,7 +536,7 @@ int DLinkedList<T>::indexOf(T item)
     // TODO
     Node* temp = head;
     for(int i=0; i < this->count; i++){
-        if(temp->data == item){
+        if(this->equals(temp->data, item, this->itemEqual)){
             return i;
         }
         temp = temp->next;
@@ -550,7 +550,7 @@ bool DLinkedList<T>::removeItem(T item, void (*removeItemData)(T))
     // TODO
     Node* temp = head;
     for(int i=0; i < this->count; i++){
-        if(temp->data == item){
+        if(this->equals(temp->data, item, this->itemEqual)){
             if(removeItemData){
                 removeItemData(temp->data);
             }
@@ -568,7 +568,7 @@ bool DLinkedList<T>::contains(T item)
     // TODO
     Node* temp = head;
     for(int i=0; i < this->count; i++){
-        if(temp->data == item){
+        if(this->equals(temp->data, item, this->itemEqual)){
             return true;
         }
         temp = temp->next;
@@ -588,22 +588,20 @@ string DLinkedList<T>::toString(string (*item2str)(T &))
      * @return A string representation of the list with elements separated by commas and enclosed in square brackets.
      */
     // TODO
-    string str = "[";
+    ostringstream oss;
+    oss << "[";
     Node* temp = head;
-    for(int i=0; i < this->count; i++){
-        if(i != 0){
-            str += ", ";
+    for (int i = 0; i < this->count; i++) {
+        if (i != 0) {
+            oss << ", ";
         }
-        if(item2str){
-            str += item2str(temp->data);
-        }
-        else{
-            str += to_string(temp->data);
+        if (item2str) {
+            oss << item2str(temp->data);
         }
         temp = temp->next;
     }
-    str += "]";
-    return str;
+    oss << "]";
+    return oss.str();
 }
 
 template <class T>

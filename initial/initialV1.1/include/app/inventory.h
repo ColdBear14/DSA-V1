@@ -32,6 +32,7 @@ public:
     string toString() const;
 
     T removeAt(int index); // add function to remove element at specific index
+    void sort(bool ascending, List1D<string> &result);
 
     friend ostream &operator<<(ostream &os, const List1D<T> &list);
 };
@@ -55,7 +56,7 @@ public:
     List1D<T> getRow(int rowIndex) const;
     string toString() const;
 
-    T removeAt(int index); // add function to remove element at specific index
+    IList<T>* removeAt(int index); // add function to remove element at specific index
 
     friend ostream &operator<<(ostream &os, const List2D<T> &matrix);
 };
@@ -91,7 +92,7 @@ public:
     void addProduct(const List1D<InventoryAttribute> &attributes, const string &name, int quantity);
     void removeProduct(int index);
 
-    List1D<string> query(int attributeName, const double &minValue,
+    List1D<string> query(string attributeName, const double &minValue,
                          const double &maxValue, int minQuantity, bool ascending) const;
 
     void removeDuplicates();
@@ -114,47 +115,46 @@ template <typename T>
 List1D<T>::List1D()
 {
     // TODO
-    XArrayList<T> *list = new XArrayList<T>();
-    this->pList = list;
+    this->pList = new XArrayList<T>();
 }
 
 template <typename T>
 List1D<T>::List1D(int num_elements)
 {
     // TODO
-    XArrayList<T> *list = new XArrayList<T>();
+    this->pList = new XArrayList<T>();
     for(int i = 0; i < num_elements; i++)
     {
-        list->add(0);
+        pList->add(T());
     }
-    this->pList = list;
 }
 
 template <typename T>
 List1D<T>::List1D(const T *array, int num_elements)
 {
     // TODO
-    XArrayList<T> *list = new XArrayList<T>();
+    this->pList = new XArrayList<T>();
     for(int i = 0; i < num_elements; i++)
     {
-        list->add(array[i]);
+        pList->add(array[i]);
     }
-    this->pList = list;
 }
 
 template <typename T>
 List1D<T>::List1D(const List1D<T> &other)
 {
     // TODO
-    XArrayList<T> *list = new XArrayList<T>(other.pList);
-    this->pList = list;
+    this->pList = new XArrayList<T>();
+    for(int i = 0; i < other.size(); i++)
+    {
+        pList->add(other.get(i));
+    }
 }
 
 template <typename T>
 List1D<T>::~List1D()
 {
     // TODO
-    ~XArrayList<T>();
     delete pList;
 }
 
@@ -176,7 +176,7 @@ template <typename T>
 void List1D<T>::set(int index, T value)
 {
     // TODO
-    pList->add(index, value);
+    pList->get(index) = value;
 }
 
 template <typename T>
@@ -190,10 +190,11 @@ template <typename T>
 string List1D<T>::toString() const
 {
     // TODO
+    if(!pList) return "[]";
     return pList->toString();
 }
 
-template <typename T>
+template <typename T> // Remember to change back to T
 ostream &operator<<(ostream &os, const List1D<T> &list)
 {
     // TODO
@@ -209,40 +210,80 @@ T List1D<T>::removeAt(int index)
     return pList->removeAt(index);
 }
 
+template <typename T>
+void List1D<T>::sort(bool ascending, List1D<string> &result) {
+    // if (ascending) {
+    //     // Shell sort for ascending order
+    //     int n = pList->size();
+    //     for (int gap = n / 2; gap > 0; gap /= 2) {
+    //         for (int i = gap; i < n; i += 1) {
+    //             T temp = pList->get(i);
+    //             string temp2 = result.get(i);
+    //             int j;
+    //             for (j = i; j >= gap && pList->get(j - gap) > temp; j -= gap) {
+    //                 pList->add(j, pList->get(j - gap));
+    //                 result.add(j, result.get(j - gap));
+    //             }
+    //             pList->add(j, temp);
+    //             result.add(j, temp2);
+    //         }
+    //     }
+    // } else {
+    //     // Shell sort for descending order
+    //     int n = pList->size();
+    //     for (int gap = n / 2; gap > 0; gap /= 2) {
+    //         for (int i = gap; i < n; i += 1) {
+    //             T temp = pList->get(i);
+    //             string temp2 = result.get(i);
+    //             int j;
+    //             for (j = i; j >= gap && pList->get(j - gap) < temp; j -= gap) {
+    //                 pList->add(j, pList->get(j - gap));
+    //                 result.add(j, result.get(j - gap));
+    //             }
+    //             pList->add(j, temp);
+    //             result.add(j, temp2);
+    //         }
+    //     }
+    // }
+}
+
 // -------------------- List2D Method Definitions --------------------
 template <typename T>
 List2D<T>::List2D()
 {
     // TODO
-    DLinkedList<T> *listMatrix = new DLinkedList<T>();
-    this->pMatrix = listMatrix;
+    this->pMatrix = new DLinkedList<IList<T>*>();
 }
 
 template <typename T>
 List2D<T>::List2D(List1D<T> *array, int num_rows)
 {
     // TODO
-    DLinkedList<T> *listMatrix = new DLinkedList<T>();
+    this->pMatrix = new DLinkedList<IList<T>*>();
     for(int i = 0; i < num_rows; i++)
     {
-        listMatrix->add(array[i]);
+        List1D<T>* row = new List1D<T>(array[i]);
+        // pMatrix->add(i, row);
     }
-    this->pMatrix = listMatrix;
 }
 
 template <typename T>
 List2D<T>::List2D(const List2D<T> &other)
 {
     // TODO
-    DLinkedList<T> *listMatrix = new DLinkedList<T>(other.pMatrix);
-    this->pMatrix = listMatrix;
+    this->pMatrix = new DLinkedList<IList<T>*>();
+    for(int i = 0; i < other.rows(); i++)
+    {
+        List1D<T> row = other.getRow(i);
+        List1D<T>* newRow = new List1D<T>(row);
+        // pMatrix->add(i, newRow);
+    }
 }
 
 template <typename T>
 List2D<T>::~List2D()
 {
     // TODO
-    ~DLinkedList<T>();
     delete pMatrix;
 }
 
@@ -257,21 +298,29 @@ template <typename T>
 void List2D<T>::setRow(int rowIndex, const List1D<T> &row)
 {
     // TODO
-    pMatrix->add(rowIndex, row);
+    IList<T>* newRow = new XArrayList<T>();
+    for (int i = 0; i < row.size(); ++i) {
+        newRow->add(row.get(i));
+    }
+    pMatrix->add(rowIndex, newRow);
 }
 
 template <typename T>
 T List2D<T>::get(int rowIndex, int colIndex) const
 {
-    // TODO
-    return pMatrix->get(rowIndex).get(colIndex);
+    return pMatrix->get(rowIndex)->get(colIndex);
 }
 
 template <typename T>
 List1D<T> List2D<T>::getRow(int rowIndex) const
 {
     // TODO
-    return pMatrix->get(rowIndex);
+    IList<T>* row = pMatrix->get(rowIndex);
+    List1D<T> result;
+    for (int i = 0; i < row->size(); ++i) {
+        result.add(row->get(i));
+    }
+    return result;
 }
 
 template <typename T>
@@ -281,7 +330,7 @@ string List2D<T>::toString() const
     return pMatrix->toString();
 }
 
-template <typename T>
+template <class T>
 ostream &operator<<(ostream &os, const List2D<T> &matrix)
 {
     // TODO
@@ -291,10 +340,8 @@ ostream &operator<<(ostream &os, const List2D<T> &matrix)
 
 // -------------------- List2D Method Definitions --------------------
 template <typename T>
-T List2D<T>::removeAt(int index)
-{
-    // TODO
-    return pMatrix->removeAt(index);
+IList<T>* List2D<T>::removeAt(int index) {
+    return pMatrix->removeAt(index); // Return the removed row (IList<T>*)
 }
 
 // -------------------- InventoryManager Method Definitions --------------------
@@ -388,14 +435,35 @@ void InventoryManager::removeProduct(int index)
     productNames.removeAt(index);
     quantities.removeAt(index);
     attributesMatrix.removeAt(index);
-
 }
 
-List1D<string> InventoryManager::query(int attributeName, const double &minValue,
+List1D<string> InventoryManager::query(string attributeName, const double &minValue,
                                        const double &maxValue, int minQuantity, bool ascending) const
 {
     // TODO
-
+    List1D<string> result;
+    List1D<int> quantitiesList;
+    for(int i = 0; i < this->size(); i++)
+    {
+        bool valid = false;
+        List1D<InventoryAttribute> productAttrs = getProductAttributes(i);
+        for (int j = 0; j < productAttrs.size(); j++) {
+            InventoryAttribute attr = productAttrs.get(j);
+            if (attr.name == attributeName) {
+                if (attr.value >= minValue && attr.value <= maxValue && getProductQuantity(i) >= minQuantity) {
+                    valid = true;
+                }
+                break; // Exit after checking the relevant attribute
+            }
+        }
+        if (valid) {
+            result.add(getProductName(i));
+            quantitiesList.add(getProductQuantity(i));
+        }
+    }
+    // Sort based on quantities
+    quantitiesList.sort(ascending, result);
+    return result;
 }
 
 void InventoryManager::removeDuplicates()
