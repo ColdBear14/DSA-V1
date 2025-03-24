@@ -34,7 +34,8 @@ public:
     T removeAt(int index); // add function to remove element at specific index
     void sort(bool ascending, List1D<string> &result);
 
-    friend ostream &operator<<(ostream &os, const List1D<T> &list);
+    template <typename U>
+    friend ostream &operator<<(ostream &os, const List1D<U> &list);
 };
 
 // -------------------- List2D --------------------
@@ -58,15 +59,25 @@ public:
 
     IList<T>* removeAt(int index); // add function to remove element at specific index
 
-    friend ostream &operator<<(ostream &os, const List2D<T> &matrix);
+    template <typename U>
+    friend ostream &operator<<(ostream &os, const List2D<U> &matrix);
 };
 
 struct InventoryAttribute
 {
     string name;
     double value;
+    InventoryAttribute() : name(""), value(0.0) {}
     InventoryAttribute(const string &name, double value) : name(name), value(value) {}
+    bool operator==(const InventoryAttribute &other) const
+    {
+        return name == other.name && value == other.value;
+    }
     string toString() const { return name + ": " + to_string(value); }
+    friend std::ostream &operator<<(std::ostream &os, const InventoryAttribute &attr) {
+        os << attr.name << ": " << attr.value;
+        return os;
+    }
 };
 
 // -------------------- InventoryManager --------------------
@@ -441,29 +452,29 @@ List1D<string> InventoryManager::query(string attributeName, const double &minVa
                                        const double &maxValue, int minQuantity, bool ascending) const
 {
     // TODO
-    List1D<string> result;
-    List1D<int> quantitiesList;
-    for(int i = 0; i < this->size(); i++)
-    {
-        bool valid = false;
-        List1D<InventoryAttribute> productAttrs = getProductAttributes(i);
-        for (int j = 0; j < productAttrs.size(); j++) {
-            InventoryAttribute attr = productAttrs.get(j);
-            if (attr.name == attributeName) {
-                if (attr.value >= minValue && attr.value <= maxValue && getProductQuantity(i) >= minQuantity) {
-                    valid = true;
-                }
-                break; // Exit after checking the relevant attribute
-            }
-        }
-        if (valid) {
-            result.add(getProductName(i));
-            quantitiesList.add(getProductQuantity(i));
-        }
-    }
-    // Sort based on quantities
-    quantitiesList.sort(ascending, result);
-    return result;
+    // List1D<string> result;
+    // List1D<int> quantitiesList;
+    // for(int i = 0; i < this->size(); i++)
+    // {
+    //     bool valid = false;
+    //     List1D<InventoryAttribute> productAttrs = getProductAttributes(i);
+    //     for (int j = 0; j < productAttrs.size(); j++) {
+    //         InventoryAttribute attr = productAttrs.get(j);
+    //         if (attr.name == attributeName) {
+    //             if (attr.value >= minValue && attr.value <= maxValue && getProductQuantity(i) >= minQuantity) {
+    //                 valid = true;
+    //             }
+    //             break; // Exit after checking the relevant attribute
+    //         }
+    //     }
+    //     if (valid) {
+    //         result.add(getProductName(i));
+    //         quantitiesList.add(getProductQuantity(i));
+    //     }
+    // }
+    // // Sort based on quantities
+    // quantitiesList.sort(ascending, result);
+    // return result;
 }
 
 void InventoryManager::removeDuplicates()
@@ -514,26 +525,26 @@ void InventoryManager::split(InventoryManager &section1,
     int size1 = this->size() * ratio;
     int size2 = this->size() - size1;
 
-    // List2D<InventoryAttribute> matrix1;
-    // List1D<string> names1;
-    // List1D<int> quantities1;
-    // List2D<InventoryAttribute> matrix2;
-    // List1D<string> names2;
-    // List1D<int> quantities2;
-    // for(int i = 0; i < size1; i++)
-    // {
-    //     matrix1.setRow(matrix1.rows(), this->getProductAttributes(i));
-    //     names1.add(this->getProductName(i));
-    //     quantities1.add(this->getProductQuantity(i));
-    // }
-    // for(int i = size1; i < this->size(); i++)
-    // {
-    //     matrix2.setRow(matrix2.rows(), this->getProductAttributes(i));
-    //     names2.add(this->getProductName(i));
-    //     quantities2.add(this->getProductQuantity(i));
-    // }
-    // section1 = InventoryManager(matrix1, names1, quantities1);
-    // section2 = InventoryManager(matrix2, names2, quantities2);
+    List2D<InventoryAttribute> matrix1;
+    List1D<string> names1;
+    List1D<int> quantities1;
+    List2D<InventoryAttribute> matrix2;
+    List1D<string> names2;
+    List1D<int> quantities2;
+    for(int i = 0; i < size1; i++)
+    {
+        matrix1.setRow(matrix1.rows(), this->getProductAttributes(i));
+        names1.add(this->getProductName(i));
+        quantities1.add(this->getProductQuantity(i));
+    }
+    for(int i = size1; i < this->size(); i++)
+    {
+        matrix2.setRow(matrix2.rows(), this->getProductAttributes(i));
+        names2.add(this->getProductName(i));
+        quantities2.add(this->getProductQuantity(i));
+    }
+    section1 = InventoryManager(matrix1, names1, quantities1);
+    section2 = InventoryManager(matrix2, names2, quantities2);
 
         for(int i = 0; i < size1; i++)
     {
