@@ -581,17 +581,17 @@ string DLinkedList<T>::toString(string (*item2str)(T &))
     // TODO
     stringstream ss;
     ss << "[";
-    Node* ptr = head->next;
-    while(ptr != tail->prev){
-        if(item2str != 0) ss << item2str(ptr->data) << ", ";
-        else ss << ptr->data << ", ";
+    Node* temp = head->next;
+    while(temp != tail->prev){
+        if(item2str != 0) ss << item2str(temp->data) << ", ";
+        else ss << temp->data << ", ";
         
-        ptr = ptr->next;
+        temp = temp->next;
     }
     
     if(count > 0){
-        if(item2str != 0) ss << item2str(ptr->data) << "]";
-        else ss << ptr->data << "]";
+        if(item2str != 0) ss << item2str(temp->data) << "]";
+        else ss << temp->data << "]";
     }
     else 
         ss << "]";

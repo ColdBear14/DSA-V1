@@ -271,10 +271,9 @@ List2D<T>::List2D(List1D<T> *array, int num_rows)
 {
     // TODO
     this->pMatrix = new DLinkedList<IList<T>*>();
-    for(int i = 0; i < num_rows; i++)
-    {
-        List1D<T>* row = new List1D<T>(array[i]);
-        // pMatrix->add(i, row);
+    for(int i = 0; i < num_rows; i++) {
+        IList<T>* newRow = new List1D<T>(array[i]);
+        pMatrix->add(i, newRow);
     }
 }
 

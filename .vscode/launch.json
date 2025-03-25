@@ -1,14 +1,15 @@
 {
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Launch Program",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/initial/initialV1.2/src/main.exe",
+            "program": "${workspaceFolder}/initial/initial-Testcase/src/main.exe",
             "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/initial/initialV1.2/src",
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}/initial/initial-Testcase/src",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",
