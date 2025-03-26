@@ -34,7 +34,6 @@ public:
     string toString() const;
 
     T removeAt(int index); // add function to remove element at specific index
-    int indexOf(const T &value) const;
     void add(int index, const T &value);
 
     template <typename U>
@@ -253,12 +252,6 @@ T List1D<T>::removeAt(int index)
 {
     // TODO
     return pList->removeAt(index);
-}
-
-template <typename T>
-int List1D<T>::indexOf(const T &value) const
-{
-    return pList->indexOf(value);
 }
 
 template <typename T>
