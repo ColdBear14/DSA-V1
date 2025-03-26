@@ -29,7 +29,7 @@ bool (*testcase[])() = {
 	extra_tc_xarraylist17,
 	extra_tc_xarraylist18,
 	extra_tc_xarraylist19,
-	// extra_tc_xarraylist20, // error
+	extra_tc_xarraylist20,
 	extra_tc_xarraylist21,
 	extra_tc_xarraylist22,
 	extra_tc_xarraylist23,
@@ -68,7 +68,7 @@ bool (*testcase[])() = {
 	extra_tc_dlinkedlist56,
 	extra_tc_dlinkedlist57,
 	extra_tc_dlinkedlist58,
-	// extra_tc_dlinkedlist59, // error
+	extra_tc_dlinkedlist59, // error
 	extra_tc_dlinkedlist60,
 	extra_tc_dlinkedlist61,
 	extra_tc_dlinkedlist62,

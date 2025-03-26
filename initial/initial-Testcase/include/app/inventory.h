@@ -25,6 +25,7 @@ public:
     List1D(const T *array, int num_elements);
     List1D(const List1D<T> &other);
     List1D<T>& operator=(const List1D<T> &other);
+    
     virtual ~List1D();
 
     int size() const;
@@ -37,7 +38,8 @@ public:
     int indexOf(const T &value) const;
     void add(int index, const T &value);
 
-    friend ostream &operator<<(ostream &os, const List1D<T> &list);
+    template <typename U>
+    friend ostream &operator<<(ostream &os, const List1D<U> &list);
 };
 
 // -------------------- List2D --------------------
@@ -62,7 +64,8 @@ public:
 
     IList<T>* removeAt(int index);
 
-    friend ostream &operator<<(ostream &os, const List2D<T> &matrix);
+    template <typename U>
+    friend ostream &operator<<(ostream &os, const List2D<U> &matrix);
 };
 
 struct InventoryAttribute
@@ -228,11 +231,20 @@ string List1D<T>::toString() const
     return pList->toString();
 }
 
-template <typename T> // Remember to change back to T
+template <typename T> 
 ostream &operator<<(ostream &os, const List1D<T> &list)
 {
     // TODO
-    os << list.toString();
+    os << "[";
+    for (int i = 0; i < list.size(); ++i)
+    {
+        os << list.get(i);
+        if (i < list.size() - 1)
+        {
+            os << ", ";
+        }
+    }
+    os << "]";
     return os;
 }
 
@@ -388,7 +400,16 @@ template <class T>
 ostream &operator<<(ostream &os, const List2D<T> &matrix)
 {
     // TODO
-    os << matrix.toString();
+    os << "[";
+    for (int i = 0; i < matrix.size(); ++i)
+    {
+        os << matrix.getRow(i);
+        if (i < matrix.size() - 1)
+        {
+            os << ", ";
+        }
+    }
+    os << "]";
     return os;
 }
 

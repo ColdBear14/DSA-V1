@@ -418,6 +418,9 @@
       * In case of memory allocation failure, catches std::bad_alloc.
       */
      // TODO
+     if((index < 0)){
+         throw std::out_of_range("Index is out of range!");
+     }
  
      if(index > capacity){
          int new_capacity = capacity * 1.5;
@@ -429,11 +432,10 @@
              delete[] data;
              data = new_data;
              capacity = new_capacity;
-         }
-         catch(std::bad_alloc& e){
-            std::cerr<<"Memory allocation failure (in ensure)"<<e.what()<<endl;
+         }catch(const std::bad_alloc& e){
+            e.what();
             throw;
-         }
+        }
      }
  }
  
