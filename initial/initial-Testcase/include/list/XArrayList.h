@@ -232,7 +232,14 @@
  XArrayList<T>::XArrayList(const XArrayList<T> &list)
  {
      // TODO
-     copyFrom(list);
+     this->capacity = list.capacity;
+     this -> count = list.count;
+     this->itemEqual = list.itemEqual;
+     this->deleteUserData = list.deleteUserData;
+     this->data = new T[this->capacity];
+     for(int i = 0; i < list.count; i++){
+        this->data[i] = list.data[i];
+    }
  }
  
  template <class T>
@@ -248,7 +255,13 @@
  XArrayList<T>::~XArrayList()
  {
      // TODO
-     removeInternalData();
+     if(deleteUserData)
+     {
+         deleteUserData(this);
+     }
+     delete []data;
+     data = nullptr;
+     count = 0;
  }
  
  template <class T>
@@ -295,8 +308,8 @@
  {
      // TODO
      for (int i = 0; i < count; i++){
-        if (this->equals(item, data[i], itemEqual) || data[i] == item){
-            if(removeItemData != nullptr){
+        if (this->equals(item, data[i], this->itemEqual) || data[i] == item){
+            if(removeItemData != 0){
                 removeItemData(data[i]);
             }
             removeAt(i);

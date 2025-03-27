@@ -514,21 +514,14 @@ template <class T>
  int DLinkedList<T>::indexOf(T item)
  {
      // TODO
-     bool found = false;
-     Node *temp = head->next;
-     int foundAt = 0;
-     while (temp != tail)
-     {
-         found = DLinkedList<T>::equals(temp->data, item, this->itemEqual);
-         if (found)
-             break;
+     Node* temp = head->next; // Start from the first actual data node
+     for (int i = 0; i < this->count; i++) {
+         if (this->equals(temp->data, item, this->itemEqual) || temp->data == item) {
+             return i;
+         }
          temp = temp->next;
-         foundAt += 1;
      }
-     if (found)
-         return foundAt;
-     else
-         return -1;
+     return -1;
  }
  
  template <class T>
