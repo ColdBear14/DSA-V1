@@ -365,9 +365,6 @@
  void DLinkedList<T>::add(T e)
  {
      // TODO
-     if (tail == nullptr) {
-         throw std::runtime_error("Tail is null");
-     }
  
      Node* pNew = new Node(e, tail, tail->prev);
      if (tail->prev != nullptr) {
@@ -400,10 +397,11 @@
      prev->next = newNode;
      current->prev = newNode;
  
-     if (index == count)
-         tail->prev = newNode;
+     if (index == count){
+            tail->prev = newNode;
+     }
 
-     count += 1;
+    ++count;
  }
  
  template <class T>
@@ -524,7 +522,7 @@
      while (temp != tail)
      {
          found = DLinkedList<T>::equals(temp->data, item, this->itemEqual);
-         if (found)
+         if (found || temp->data)
              break;
          temp = temp->next;
          foundAt += 1;

@@ -365,10 +365,6 @@ template <class T>
  void DLinkedList<T>::add(T e)
  {
      // TODO
-     if (tail == nullptr) {
-         throw std::runtime_error("Tail is null");
-     }
- 
      Node* pNew = new Node(e, tail, tail->prev);
      if (tail->prev != nullptr) {
          (tail->prev)->next = pNew;
@@ -403,7 +399,7 @@ template <class T>
      if (index == count)
          tail->prev = newNode;
 
-     count += 1;
+     count++;
  }
  
  template <class T>

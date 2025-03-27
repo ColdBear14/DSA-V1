@@ -1053,6 +1053,7 @@ bool extra_tc_inventory128() {
 	}
 }
 
+
 bool extra_tc_inventory129() {
 	string expect = "InventoryManager[\nAttributesMatrix: [[weight: 10.000000, height: 156.000000], [weight: 20.000000, depth: 24.000000, height: 100.000000], [color: 2.000000]],\nProductNames: [Product A, Product B, Product C],\nQuantities: [50, 130, 20]\n]";
 	string error = "InventoryAttribute::removeDuplicates";

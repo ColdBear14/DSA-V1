@@ -346,16 +346,11 @@
  int XArrayList<T>::indexOf(T item)
  {
      // TODO
-     bool found = false;
-     int foundAt = -1;
      for(int i = 0; i < count; i++){
-         found = XArrayList<T>::equals(data[i], item, this->itemEqual);
-         if(found){
-             foundAt = i;
-             break;
+         if(this->equals(data[i], item, this->itemEqual) || data[i] == item){
+             return i;
          }
      }
-     return foundAt;
  }
  template <class T>
  bool XArrayList<T>::contains(T item)
