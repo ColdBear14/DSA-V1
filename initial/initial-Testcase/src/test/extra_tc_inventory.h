@@ -1350,3 +1350,26 @@ bool extra_tc_inventory140() {
 		return 0;
 	}
 }
+
+bool extra_tc_inventory141() {
+	string expect = "[Product C, Product B, Product A, Product D]";
+	string error = "InventoryAttribute::query";
+	try {
+		InventoryAttribute attributeA0[] = { {"weight", 10}, {"height", 156} };
+		InventoryAttribute attributeA1[] = { {"weight", 10}, {"depth", 24}, {"height", 100} };
+		InventoryAttribute attributeA2[] = { {"weight", 10} };
+		InventoryAttribute attributeA3[] = { {"weight", 10}, {"depth", 24}, {"height", 100} };
+		string product_name[] = { "Product A", "Product B", "Product C", "Product D" };
+		int quantities_[] = { 50, 30, 20, 100 };
+		List1D<InventoryAttribute> list1D[] = { List1D< InventoryAttribute>(attributeA0, 2), List1D< InventoryAttribute>(attributeA1, 3), List1D< InventoryAttribute>(attributeA2, 1), List1D< InventoryAttribute>(attributeA3, 3) };
+		List2D<InventoryAttribute> matrix(list1D, 4);
+		List1D<string> names(product_name, 4);
+		List1D<int> quantities(quantities_, 4);
+		InventoryManager inv(matrix, names, quantities);
+		return StringChecker(inv.query("weight", 2.0, 20.0, 10, 1).toString(), expect, error);
+	}
+	catch (...) {
+		cout << "Error: " + error << endl;
+		return 0;
+	}
+}

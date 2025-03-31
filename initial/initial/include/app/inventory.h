@@ -617,6 +617,11 @@ List1D<string> InventoryManager::sortAndRetrieveProductNames(const List1D<int>& 
     List1D<double> sortValue = listValue;
     List1D<string> result;
 
+    List1D<int> listQuantity;
+    for(int i = 0; i < listPosition.size(); i++){
+        listQuantity.add(getProductQuantity(listPosition.get(i)));
+    }
+
     if(ascending = true){
         for(int i = 1; i<listPosition.size(); i++){
             int key = sortValue.get(i);
@@ -639,6 +644,7 @@ List1D<string> InventoryManager::sortAndRetrieveProductNames(const List1D<int>& 
             sortValue.set(j+1, key);
         }
     }
+    
     for(int i = 0; i < listPosition.size(); i++){
         for(int j = 0; j < listPosition.size(); j++ ){
             if(sortValue.get(i) == listValue.get(j)){
