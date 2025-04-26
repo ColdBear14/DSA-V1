@@ -203,7 +203,7 @@
      this->capacity = list.capacity;
      this -> count = list.count;
      this->itemEqual = list.itemEqual;
-     this->deleteUserData = nullptr;
+     this->deleteUserData = list.deleteUserData;
      this->data = new T[this->capacity];
      for(int i = 0; i < list.count; i++){
         this->data[i] = list.data[i];
@@ -240,9 +240,11 @@
  XArrayList<T> &XArrayList<T>::operator=(const XArrayList<T> &list)
  {
      // TODO
-    removeInternalData();
-    copyFrom(list);
-     return *this;
+     if (this != &list){
+        removeInternalData();
+        copyFrom(list);
+    }
+    return *this;
  }
  
  template <class T>
@@ -419,8 +421,8 @@
      }
  
      if(index > capacity){
-         int new_capacity = capacity * 2;
-         try{
+        int new_capacity = capacity * 2;
+        try{
              T* new_data = new T[new_capacity];
             for(int i = 0; i < count; i++){
                 new_data[i] = data[i];
