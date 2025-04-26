@@ -330,11 +330,6 @@
      // TODO
      this->head = new Node();
      this->tail = new Node();
-     this->head->next = this->tail;
-     this->tail->prev = this->head;
-     this->count = 0;
-     this->deleteUserData = list.deleteUserData;
-     this->itemEqual = list.itemEqual;
      copyFrom(list);
  }
  
@@ -342,12 +337,8 @@
  DLinkedList<T> &DLinkedList<T>::operator=(const DLinkedList<T> &list)
  {
      // TODO
-     if (this != &list) {
-         clear();
-         this->deleteUserData = list.deleteUserData;
-         this->itemEqual = list.itemEqual;
-         copyFrom(list);
-     }
+     removeInternalData();
+     copyFrom(list);
      return *this;
  }
  
@@ -355,10 +346,10 @@
  DLinkedList<T>::~DLinkedList()
  {
      // TODO
-     clear();
-     delete head;
-     delete tail;
-     head = tail = nullptr;
+     removeInternalData();
+     
+     if(head != 0) delete head;
+     if(tail != 0) delete tail;
  }
  
  template <class T>
@@ -486,19 +477,10 @@
  void DLinkedList<T>::clear()
  {
      // TODO
-
-     if (deleteUserData != nullptr){
-        deleteUserData(this);
-     }
-    Node* ptr = head->next;
-    while (ptr != tail) {
-        Node* next = ptr->next;
-        delete ptr;
-        ptr = next;
-    }
-    head->next = tail;
-    tail->prev = head;
-    this->count = 0;
+     removeInternalData();
+     this->count = 0;
+     this->head->next = this->tail; this->tail->next = 0;
+     this->tail->prev = this->head; this->head->prev = 0;
  }
  
  template <class T>
@@ -530,7 +512,7 @@
  bool DLinkedList<T>::removeItem(T item, void (*removeItemData)(T))
  {
      // TODO
-     Node* temp = head->next; // Start from the first actual data node
+     Node* temp = head->next;
      for (int i = 0; i < this->count; i++) {
          if (this->equals(temp->data, item, this->itemEqual) || temp->data == item) {
              if (removeItemData != 0) {
@@ -591,7 +573,9 @@
       * Iterates through the source list and adds each element, preserving the order of the nodes.
       */
      // TODO
-     this->clear();
+     this->count = 0;
+     this->head->next = this->tail; this->tail->next = 0;
+     this->tail->prev = this->head; this->head->prev = 0;
  
      this->deleteUserData = list.deleteUserData;
      this->itemEqual = list.itemEqual;

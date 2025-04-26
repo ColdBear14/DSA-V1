@@ -223,10 +223,12 @@
      {
          deleteUserData(this);
      }
-     delete []data;
-     data = nullptr;
-     count = 0;
-     capacity = 10;
+     if(data != nullptr)
+     {
+         delete[] data;
+         data = nullptr;
+
+     }
  }
  
  template <class T>
