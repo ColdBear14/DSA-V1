@@ -240,11 +240,9 @@
  XArrayList<T> &XArrayList<T>::operator=(const XArrayList<T> &list)
  {
      // TODO
-     if (this != &list){
-        removeInternalData();
-        copyFrom(list);
-    }
-    return *this;
+     removeInternalData();
+     copyFrom(list);
+     return *this;
  }
  
  template <class T>
