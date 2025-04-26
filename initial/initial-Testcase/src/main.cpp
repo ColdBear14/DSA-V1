@@ -28,8 +28,8 @@ bool (*testcase[])() = {
 	extra_tc_xarraylist16,
 	extra_tc_xarraylist17,
 	extra_tc_xarraylist18,
-	// extra_tc_xarraylist19,
-	// extra_tc_xarraylist20,
+	extra_tc_xarraylist19,
+	extra_tc_xarraylist20,
 	extra_tc_xarraylist21,
 	extra_tc_xarraylist22,
 	extra_tc_xarraylist23,
@@ -149,8 +149,7 @@ bool (*testcase[])() = {
 	extra_tc_inventory137,
 	extra_tc_inventory138,
 	extra_tc_inventory139,
-	extra_tc_inventory140,
-	extra_tc_inventory141,
+	extra_tc_inventory140
 };
 
 void runAll() {

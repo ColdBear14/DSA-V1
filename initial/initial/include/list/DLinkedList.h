@@ -591,7 +591,7 @@ template <class T>
      // TODO
      this->clear();
  
-     this->deleteUserData = list.deleteUserData;
+     this->deleteUserData = nullptr;
      this->itemEqual = list.itemEqual;
  
      Node* ptr= list.head->next;
